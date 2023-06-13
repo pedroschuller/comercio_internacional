@@ -35,6 +35,16 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     opportunity_cost_b_wheat = hours_b_wheat / hours_b_textiles
     opportunity_cost_b_textiles = 1/opportunity_cost_b_wheat
 
+
+    df_opportunity = pd.DataFrame(
+                [
+                {"": "País A", "Custo de oportunidade de produzir trigo em unidades de tecidos": opportunity_cost_a_wheat, "Custo de oportunidade de produzir tecidos em unidades de trigo": opportunity_cost_a_textiles},
+                {"": "País B", "Custo de oportunidade de produzir trigo em unidades de tecidos": opportunity_cost_b_wheat, "Custo de oportunidade de produzir tecidos em unidades de trigo": opportunity_cost_b_textiles}
+                ]
+    )
+
+    st.dataframe(df_opportunity.style.highlight_min(axis=0), hide_index=True)
+
     # Determine the comparative advantage
     comparative_advantage_country_textiles = "Ninguém"
     if (opportunity_cost_a_wheat) > (opportunity_cost_b_wheat):
@@ -66,36 +76,37 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     st.write(f"Total consumido sem trocas comerciais: {units_a_no_trade_wheat+units_a_no_trade_textiles+units_b_no_trade_wheat+units_b_no_trade_textiles:.0f}")
 
     # TRADE    
-    # find fair price to trade wheat (meet halfway)
-    fair_price_wheat = np.sqrt(opportunity_cost_a_wheat*opportunity_cost_b_wheat)
-    
-    # determine trade quantities
-    trade_quantity_wheat = (units_a_trade_wheat+units_b_trade_wheat)/(fair_price_wheat+1)
+    if comparative_advantage_country_textiles != "Ninguém":
+        # find fair price to trade wheat (meet halfway)
+        fair_price_wheat = np.sqrt(opportunity_cost_a_wheat*opportunity_cost_b_wheat)
+        
+        # determine trade quantities
+        trade_quantity_wheat = (units_a_trade_wheat+units_b_trade_wheat)/(fair_price_wheat+1)
 
-    # determine trade direction (who sells what to whom)
-    if comparative_advantage_country_textiles == "O País B":
-        trade_quantity_wheat = -trade_quantity_wheat
+        # determine trade direction (who sells what to whom)
+        if comparative_advantage_country_textiles == "O País B":
+            trade_quantity_wheat = -trade_quantity_wheat
 
-    trade_quantity_textiles = trade_quantity_wheat*fair_price_wheat
+        trade_quantity_textiles = trade_quantity_wheat*fair_price_wheat
 
-    # determine consumption after trade
-    units_a_consume_wheat = np.round(units_a_trade_wheat + trade_quantity_wheat)
-    units_b_consume_wheat = np.round(units_b_trade_wheat - trade_quantity_wheat)
-    units_a_consume_textiles = np.round(units_a_trade_textiles - trade_quantity_textiles)
-    units_b_consume_textiles = np.round(units_b_trade_textiles + trade_quantity_textiles)
+        # determine consumption after trade
+        units_a_consume_wheat = np.round(units_a_trade_wheat + trade_quantity_wheat)
+        units_b_consume_wheat = np.round(units_b_trade_wheat - trade_quantity_wheat)
+        units_a_consume_textiles = np.round(units_a_trade_textiles - trade_quantity_textiles)
+        units_b_consume_textiles = np.round(units_b_trade_textiles + trade_quantity_textiles)
 
-    st.write("Quantidades produzidas recorrendo a trocas comerciais:")
-    df_trade = pd.DataFrame(
-                [
-                {"": "País A", "Produção de trigo": units_a_trade_wheat, "Produção de tecidos": units_a_trade_textiles, "Consumo de trigo*": units_a_consume_wheat, "Consumo de tecidos*": units_a_consume_textiles},
-                {"": "País B", "Produção de trigo": units_b_trade_wheat, "Produção de tecidos": units_b_trade_textiles, "Consumo de trigo*": units_b_consume_wheat, "Consumo de tecidos*": units_b_consume_textiles}
-                ]
-    )
-    st.dataframe(df_trade, hide_index=True)
+        st.write("Quantidades produzidas recorrendo a trocas comerciais:")
+        df_trade = pd.DataFrame(
+                    [
+                    {"": "País A", "Produção de trigo": units_a_trade_wheat, "Produção de tecidos": units_a_trade_textiles, "Consumo de trigo*": units_a_consume_wheat, "Consumo de tecidos*": units_a_consume_textiles},
+                    {"": "País B", "Produção de trigo": units_b_trade_wheat, "Produção de tecidos": units_b_trade_textiles, "Consumo de trigo*": units_b_consume_wheat, "Consumo de tecidos*": units_b_consume_textiles}
+                    ]
+        )
+        st.dataframe(df_trade, hide_index=True)
 
-    st.write(f"Total consumido com comércio livre: {units_a_trade_wheat+units_a_trade_textiles+units_b_trade_wheat+units_b_trade_textiles:.0f}")
+        st.write(f"Total consumido com comércio livre: {units_a_trade_wheat+units_a_trade_textiles+units_b_trade_wheat+units_b_trade_textiles:.0f}")
 
-    st.write("*Assumindo que os países se encontram um preço a meio caminho dos respetivos custos de oportunidade")
+        st.write("*Assumindo que os países se encontram um preço a meio caminho dos respetivos custos de oportunidade")
 
 
 # Input the total number of hours available and the hours required by each country to produce one unit of wheat and textiles
@@ -125,6 +136,8 @@ st.write("A teoria da dotação de factores de Heckscher-Ohlin sugere que os pa�
 
 st.write("Por exemplo, um país rico em recursos naturais, como o petróleo ou os minerais, pode especializar-se na extracção e exportação desses recursos. Esta especialização permite ao país tirar partido da sua dotação de recursos e gerar receitas de exportação. O rendimento gerado pelas exportações de recursos pode ser investido noutros sectores, como a educação, as infra-estruturas ou a tecnologia, o que leva ao desenvolvimento de outras indústrias e à diversificação da economia. Como resultado, o país regista um aumento da produtividade e dos salários dos seus trabalhadores, contribuindo para a prosperidade geral.")
 
+
+
 st.subheader("Concorrência, inovação e economias de escala")
 
 st.write("O comércio internacional fomenta a concorrência entre empresas nacionais e estrangeiras, o que pode levar a um aumento da inovação, da eficiência produtiva e dos avanços tecnológicos. Quando os produtores nacionais enfrentam a concorrência de empresas estrangeiras, são incentivados a melhorar a sua eficiência e a qualidade dos produtos para se manterem competitivos no mercado global. Este impulso para a inovação pode resultar no desenvolvimento de novas tecnologias, processos de produção e produtos, beneficiando tanto os países exportadores como os importadores.")
@@ -132,6 +145,11 @@ st.write("O comércio internacional fomenta a concorrência entre empresas nacio
 st.write("Além disso, o comércio internacional permite que os países beneficiem de economias de escala e de aprendizagem. Ao especializarem-se em determinados sectores e ao aumentarem a escala de produção, os países podem tirar partido de reduções de custos através de economias de escala. Maiores volumes de produção conduzem a custos médios mais baixos, tornando os bens mais acessíveis aos consumidores. Além disso, o aumento do comércio proporciona oportunidades de partilha de conhecimentos, colaborações transfronteiriças e aprendizagem com as melhores práticas estrangeiras, o que conduz a novas melhorias na produtividade e na competitividade. Finalmente, a internacionalização permite ao setor privado escapar a redes de corporativismo ou monopólios públicos quando é exposto a um mercado internacional, deixando de estar limitado ao mercado doméstico. De certa forma, o comércio internacional é também um fator de liberalização dos mercados domésticos e de alívio do jugo de regimes autocráticos sobre a economia.")
 
 st.write("É importante notar que manifestação das vantagens comparativas pode deixar os trabalhadores menos qualificados dos países mais desenvolvidos expostos à exportação dos seus postos de trabalho para países de menores salários. É sensato que o excedente resultante dos ganhos de eficiência trazidos pela globalização seja em parte também destinado a qualificar estes trabalhadores e numa rede de segurança para situações de desemprego e dificuldades inesperadas ou incontrolaveis, sob pena de o apoio popular ao comércio internacional desaparecer e isso dar aso ao surgimento da pior espécie de populismos, nacionalismos, extremismos e colectivismos.")
+
+st.divider()
+
+st.write("Check the source code @ https://github.com/pedroschuller/comercio_internacional/blob/main/script_comercio_internacional.py")
+
 
 
 
