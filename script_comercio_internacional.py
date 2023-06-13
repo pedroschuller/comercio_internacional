@@ -30,23 +30,22 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
 
     # Determine the comparative advantage
     comparative_advantage_country_textiles = "No one"
-    if (hours_a_wheat / hours_a_textiles) < (hours_b_wheat / hours_b_textiles):
+    if (hours_a_wheat / hours_a_textiles) > (hours_b_wheat / hours_b_textiles):
         comparative_advantage_country_textiles = "Country A" 
         units_a_trade_wheat = 0
         units_b_trade_wheat = total_hours / hours_b_wheat
         units_a_trade_textiles = total_hours / hours_a_textiles
         units_b_trade_textiles = 0    
-    if (hours_a_wheat / hours_a_textiles) > (hours_b_wheat / hours_b_textiles):
+    if (hours_a_wheat / hours_a_textiles) < (hours_b_wheat / hours_b_textiles):
         comparative_advantage_country_textiles = "Country B"
         units_a_trade_wheat = total_hours / hours_a_wheat
         units_b_trade_wheat = 0
         units_a_trade_textiles = 0
         units_b_trade_textiles = total_hours / hours_b_textiles
-    # Calculate the number of units produced with trade based on comparative advantage
 
 
     # Print the results
-    st.write(f"{comparative_advantage_country_textiles:.0f} has the comparative advantage in producing textiles.")
+    st.write(f"{comparative_advantage_country_textiles} has the comparative advantage in producing textiles.")
     st.write("Production quantities without trade:")
     st.write("Country A: {:.2f} units of wheat, {:.2f} units of textiles".format(units_a_no_trade_wheat, units_a_no_trade_textiles))
     st.write("Country B: {:.2f} units of wheat, {:.2f} units of textiles".format(units_b_no_trade_wheat, units_b_no_trade_textiles))
