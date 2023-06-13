@@ -76,8 +76,8 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
 
     units_a_consume_wheat = units_a_trade_wheat + trade_quantity_wheat
     units_b_consume_wheat = units_b_trade_wheat - trade_quantity_wheat
-    units_a_consume_textiles = units_a_trade_textiles + trade_quantity_textiles
-    units_b_consume_textiles = units_b_trade_textiles - trade_quantity_textiles
+    units_a_consume_textiles = units_a_trade_textiles - trade_quantity_textiles
+    units_b_consume_textiles = units_b_trade_textiles + trade_quantity_textiles
 
     st.write("Quantidades produzidas recorrendo a trocas comerciais:")
     df_trade = pd.DataFrame(
