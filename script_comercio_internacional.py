@@ -18,7 +18,7 @@ st.write("A teoria das vantagens comparativa de David Ricardo destaca os benefí
 st.write("Por exemplo, considere-se um cenário em que o país A tem um custo de oportunidade mais baixo na produção de trigo, enquanto o país B tem um custo de oportunidade mais baixo na produção de têxteis. Se ambos os países se especializarem na produção do bem em que têm uma vantagem comparativa e efectuarem trocas comerciais entre si, podem maximizar a sua produção global. O país A pode concentrar-se na produção de mais trigo e exportar o excedente, enquanto o país B pode especializar-se na produção de têxteis e exportá-los. Esta especialização permite que ambos os países beneficiem de uma maior produtividade e de um aumento das trocas comerciais, o que conduz ao crescimento económico e à prosperidade.")
 
 def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles, hours_b_wheat, hours_b_textiles):
-    # Calculate the number of units produced without trade
+    # Calculate the number of unidades produced without trade
     units_a_no_trade_wheat = total_hours / (hours_a_wheat+hours_a_textiles)
     units_a_no_trade_textiles = units_a_no_trade_wheat
     units_b_no_trade_wheat = total_hours / (hours_b_wheat + hours_b_textiles)
@@ -30,37 +30,44 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     units_b_trade_textiles = units_b_no_trade_textiles
 
     # Determine the comparative advantage
-    comparative_advantage_country_textiles = "No one"
+    comparative_advantage_País_textiles = "Ninguém"
     if (hours_a_wheat / hours_a_textiles) > (hours_b_wheat / hours_b_textiles):
-        comparative_advantage_country_textiles = "Country A" 
+        comparative_advantage_País_textiles = "O País A" 
         units_a_trade_wheat = 0
         units_b_trade_wheat = total_hours / hours_b_wheat
         units_a_trade_textiles = total_hours / hours_a_textiles
         units_b_trade_textiles = 0    
     if (hours_a_wheat / hours_a_textiles) < (hours_b_wheat / hours_b_textiles):
-        comparative_advantage_country_textiles = "Country B"
+        comparative_advantage_País_textiles = "O País B"
         units_a_trade_wheat = total_hours / hours_a_wheat
         units_b_trade_wheat = 0
         units_a_trade_textiles = 0
         units_b_trade_textiles = total_hours / hours_b_textiles
 
-
     # Print the results
-    st.write(f"{comparative_advantage_country_textiles} has the comparative advantage in producing textiles.")
-    st.write("Production quantities without trade:")
-    st.write("Country A: {:.2f} units of wheat, {:.2f} units of textiles".format(units_a_no_trade_wheat, units_a_no_trade_textiles))
-    st.write("Country B: {:.2f} units of wheat, {:.2f} units of textiles".format(units_b_no_trade_wheat, units_b_no_trade_textiles))
-    st.write(f"Total consumptionwithout trade: {units_a_no_trade_wheat+units_a_no_trade_textiles+units_b_no_trade_wheat+units_b_no_trade_textiles:.0f}")
+    st.write(f"{comparative_advantage_País_textiles} tem a vantagem comparativa a produzir tecidos.")
+    st.write("Quantidades produzidas sem trocas comerciais:")
+    df_no_trade = pd.DataFrame(
+                [
+                {"": "País A", "Consumo de trigo": units_a_no_trade_wheat, "Consumo de tecidos": units_a_no_trade_textiles},
+                {"": "País B", "Consumo de trigo": units_b_no_trade_wheat, "Consumo de tecidos": units_b_no_trade_wheat}
+                ]
+    )
+    st.dataframe(df_no_trade)
+
+    st.write("País A: {:.2f} unidades de trigo, {:.2f} unidades de tecidos".format(units_a_no_trade_wheat, units_a_no_trade_textiles))
+    st.write("País B: {:.2f} unidades de trigo, {:.2f} unidades de tecidos".format(units_b_no_trade_wheat, units_b_no_trade_textiles))
+    st.write(f"Total consumido sem trocas comerciais: {units_a_no_trade_wheat+units_a_no_trade_textiles+units_b_no_trade_wheat+units_b_no_trade_textiles:.0f}")
 
 
-    st.write("\nProduction quantities with trade (comparative advantage):")
-    st.write("Country A: {:.2f} units of wheat, {:.2f} units of textiles".format(units_a_trade_wheat, units_a_trade_textiles))
-    st.write("Country B: {:.2f} units of wheat, {:.2f} units of textiles".format(units_b_trade_wheat, units_b_trade_textiles))
-    st.write(f"Total consumption with trade: {units_a_trade_wheat+units_a_trade_textiles+units_b_trade_wheat+units_b_trade_textiles:.0f}")
+    st.write("Quantidades produzidas recorrendo a trocas comerciais:")
+    st.write("País A: {:.2f} unidades de trigo, {:.2f} unidades de tecidos".format(units_a_trade_wheat, units_a_trade_textiles))
+    st.write("País B: {:.2f} unidades de trigo, {:.2f} unidades de tecidos".format(units_b_trade_wheat, units_b_trade_textiles))
+    st.write(f"Total consumido com comércio livre: {units_a_trade_wheat+units_a_trade_textiles+units_b_trade_wheat+units_b_trade_textiles:.0f}")
+
 # Input the total number of hours available and the hours required by each country to produce one unit of wheat and textiles
-
 total_hours = 1800
-total_hours = st.slider('Enter the total number of hours available to work: ', 900, 3600, step = 100, value = 1800)
+total_hours = st.slider('Quantas horas tem cada país disponíveis para trabalhar?: ', 900, 3600, step = 100, value = 1800)
 
 df = pd.DataFrame(
     [
