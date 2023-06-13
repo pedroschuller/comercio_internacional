@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.set_page_config(page_title="Comércio Livre e Globalização - Comércio Livre e Globalização")
-st.title("Comércio Livre e Globalização")
+st.title("Porque é que os países que trocam, crescem?")
 st.header("Pós-Graduação em Pensamento Liberal - Comércio Livre e Globalização")
 st.write("por Pedro Schuller")
 
@@ -18,33 +18,45 @@ st.write("Por exemplo, considere-se um cenário em que o país A tem um custo de
 
 def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles, hours_b_wheat, hours_b_textiles):
     # Calculate the number of units produced without trade
-    units_a_no_trade_wheat = total_hours / hours_a_wheat
-    units_a_no_trade_textiles = total_hours / hours_a_textiles
-    units_b_no_trade_wheat = total_hours / hours_b_wheat
-    units_b_no_trade_textiles = total_hours / hours_b_textiles
+    units_a_no_trade_wheat = total_hours / (hours_a_wheat+hours_a_textiles)
+    units_a_no_trade_textiles = units_a_no_trade_wheat
+    units_b_no_trade_wheat = total_hours / (hours_b_wheat + hours_b_textiles)
+    units_b_no_trade_textiles = units_b_no_trade_wheat
 
-    # Comparative advantage calculations
-    relative_productivity_a_wheat = hours_a_wheat / (hours_a_wheat + hours_a_textiles)
-    relative_productivity_a_textiles = hours_a_textiles / (hours_a_wheat + hours_a_textiles)
-    relative_productivity_b_wheat = hours_b_wheat / (hours_b_wheat + hours_b_textiles)
-    relative_productivity_b_textiles = hours_b_textiles / (hours_b_wheat + hours_b_textiles)
+    units_a_trade_wheat = units_a_no_trade_wheat
+    units_b_trade_wheat = units_a_no_trade_textiles
+    units_a_trade_textiles = units_b_no_trade_wheat
+    units_b_trade_textiles = units_b_no_trade_textiles
 
+    # Determine the comparative advantage
+    comparative_advantage_country_textiles = "No one"
+    if (hours_a_wheat / hours_a_textiles) < (hours_b_wheat / hours_b_textiles):
+        comparative_advantage_country_textiles = "Country A" 
+        units_a_trade_wheat = 0
+        units_b_trade_wheat = total_hours / hours_b_wheat
+        units_a_trade_textiles = total_hours / hours_a_textiles
+        units_b_trade_textiles = 0    
+    if (hours_a_wheat / hours_a_textiles) > (hours_b_wheat / hours_b_textiles):
+        comparative_advantage_country_textiles = "Country B"
+        units_a_trade_wheat = total_hours / hours_a_wheat
+        units_b_trade_wheat = 0
+        units_a_trade_textiles = 0
+        units_b_trade_textiles = total_hours / hours_b_textiles
     # Calculate the number of units produced with trade based on comparative advantage
-    units_a_trade_wheat = relative_productivity_a_wheat * total_hours
-    units_a_trade_textiles = relative_productivity_a_textiles * total_hours
-    units_b_trade_wheat = relative_productivity_b_wheat * total_hours
-    units_b_trade_textiles = relative_productivity_b_textiles * total_hours
+
 
     # Print the results
+    st.write(f"{comparative_advantage_country_textiles:.0f} has the comparative advantage in producing textiles.")
     st.write("Production quantities without trade:")
     st.write("Country A: {:.2f} units of wheat, {:.2f} units of textiles".format(units_a_no_trade_wheat, units_a_no_trade_textiles))
     st.write("Country B: {:.2f} units of wheat, {:.2f} units of textiles".format(units_b_no_trade_wheat, units_b_no_trade_textiles))
+    st.write(f"Total consumptionwithout trade: {units_a_no_trade_wheat+units_a_no_trade_textiles+units_b_no_trade_wheat+units_b_no_trade_textiles:.0f}")
+
 
     st.write("\nProduction quantities with trade (comparative advantage):")
     st.write("Country A: {:.2f} units of wheat, {:.2f} units of textiles".format(units_a_trade_wheat, units_a_trade_textiles))
     st.write("Country B: {:.2f} units of wheat, {:.2f} units of textiles".format(units_b_trade_wheat, units_b_trade_textiles))
-
-
+    st.write(f"Total consumption with trade: {units_a_trade_wheat+units_a_trade_textiles+units_b_trade_wheat+units_b_trade_textiles:.0f}")
 # Input the total number of hours available and the hours required by each country to produce one unit of wheat and textiles
 
 total_hours = 1800
