@@ -108,7 +108,7 @@ df = pd.DataFrame(
        {"País": "B", "Horas necessárias para produzir trigo": 80, "Horas necessárias para produzir tecidos": 40}
     ]
 )
-edited_df = st.data_editor(df, hide_index=True, disabled = "País") 
+edited_df = st.data_editor(df, hide_index=True, disabled = ["País"]) 
 
 hours_a_wheat = int(edited_df.loc[edited_df["País"]=="A"]["Horas necessárias para produzir trigo"])
 hours_a_textiles = int(edited_df.loc[edited_df["País"]=="A"]["Horas necessárias para produzir tecidos"])
