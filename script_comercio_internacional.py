@@ -43,7 +43,7 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
                 ]
     )
 
-    st.dataframe(df_opportunity.style.highlight_min(axis=0, subset=[1,2]), hide_index=True)
+    st.dataframe(df_opportunity.style.highlight_min(axis=0, subset=["Custo de oportunidade \nde produzir trigo \nem unidades de tecidos","Custo de oportunidade \nde produzir tecidos \nem unidades de trigo"]), hide_index=True)
 
     # Determine the comparative advantage
     comparative_advantage_country_textiles = "Ninguém"
