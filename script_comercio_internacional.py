@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.set_page_config(page_title="Comércio Livre e Globalização - Comércio Livre e Globalização")
@@ -59,17 +60,20 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
 # Input the total number of hours available and the hours required by each country to produce one unit of wheat and textiles
 
 total_hours = 1800
-total_hours = st.slider('Enter the total number of hours available to work: ', 500, 2000, step = 100)
+total_hours = st.slider('Enter the total number of hours available to work: ', 900, 3600, step = 100, value = 1800)
 
-hours_a_wheat = 40
-hours_a_wheat = st.slider('Enter the number of hours Country A requires to produce one unit of wheat: ', 10, 200, step = 10)
-hours_a_textiles = 80
-hours_a_textiles = st.slider('Enter the number of hours Country A requires to produce one unit of textiles: ', 10, 200, step = 10)
-hours_b_wheat = 80
-hours_b_wheat = st.slider('Enter the number of hours Country B requires to produce one unit of wheat: ', 10, 200, step = 10)
-hours_b_textiles = 40
-hours_b_textiles = st.slider('Enter the number of hours Country B requires to produce one unit of textiles: ', 10, 200, step = 10)
+df = pd.DataFrame(
+    [
+       {"": "País A", "Horas necessárias para produzir trigo": 40, "Horas necessárias para produzir tecidos": 80},
+       {"": "País B", "Horas necessárias para produzir trigo": 80, "Horas necessárias para produzir tecidos": 40}
+    ]
+)
+edited_df = st.data_editor(df)
 
+hours_a_wheat = edited_df.loc[edited_df[""]=="País A"]["Horas necessárias para produzir trigo"]
+hours_a_textiles = edited_df.loc[edited_df[""]=="País A"]["Horas necessárias para produzir tecidos"]
+hours_b_wheat = edited_df.loc[edited_df[""]=="País B"]["Horas necessárias para produzir trigo"]
+hours_b_textiles = edited_df.loc[edited_df[""]=="País B"]["Horas necessárias para produzir tecidos"]
 
 # Simulate and display the results
 simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles, hours_b_wheat, hours_b_textiles)
