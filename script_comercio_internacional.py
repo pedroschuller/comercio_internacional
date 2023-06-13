@@ -15,7 +15,7 @@ st.subheader("Vantagem comparativa e especialização")
 
 st.write("A teoria das vantagens comparativa de David Ricardo destaca os benefícios da especialização no comércio internacional. Cada país tem recursos, competências e níveis de tecnologia diferentes, o que cria diferenças nos seus custos de oportunidade de produção. Ao especializarem-se na produção de bens ou serviços nos quais têm uma vantagem comparativa, os países podem afectar os seus recursos de forma mais eficiente. Este facto conduz a um aumento da produtividade, permitindo que os países produzam mais daquilo em que são melhores e troquem por bens e serviços em que são menos eficientes. Como resultado, ambos os países podem registar níveis de consumo mais elevados, uma vez que têm acesso a uma gama mais vasta de bens e serviços a custos mais baixos.")
 
-st.write("Por exemplo, considere-se um cenário em que o país A tem um custo de oportunidade mais baixo na produção de trigo, enquanto o país B tem um custo de oportunidade mais baixo na produção de têxteis. Se ambos os países se especializarem na produção do bem em que têm uma vantagem comparativa e efectuarem trocas comerciais entre si, podem maximizar a sua produção global. O país A pode concentrar-se na produção de mais trigo e exportar o excedente, enquanto o país B pode especializar-se na produção de têxteis e exportá-los. Esta especialização permite que ambos os países beneficiem de uma maior produtividade e de um aumento das trocas comerciais, o que conduz ao crescimento económico e à prosperidade.")
+st.write("Por exemplo, considere-se um cenário em que o país A tem um custo de oportunidade mais baixo na produção de trigo, enquanto o país B tem um custo de oportunidade mais baixo na produção de têxteis. Se ambos os países se especializarem na produção do bem em que têm uma vantagem comparativa e efectuarem trocas comerciais entre si, podem maximizar a sua produção global. O país A pode concentrar-se na produção de mais trigo e exportar o excedente, enquanto o país B pode especializar-se na produção de têxteis e exportá-los. Esta especialização permite que ambos os países beneficiem de uma maior produtividade e de um aumento das trocas comerciais, o que conduz ao crescimento económico e à prosperidade. Vamos experimentar:")
 
 def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles, hours_b_wheat, hours_b_textiles):
     # Calculate the number of unidades produced without trade
@@ -25,12 +25,12 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     units_b_no_trade_textiles = units_b_no_trade_wheat
 
     units_a_trade_wheat = units_a_no_trade_wheat
-    units_b_trade_wheat = units_a_no_trade_textiles
-    units_a_trade_textiles = units_b_no_trade_wheat
+    units_a_trade_textiles = units_a_no_trade_textiles
+    units_b_trade_wheat = units_b_no_trade_wheat
     units_b_trade_textiles = units_b_no_trade_textiles
 
     # Determine the comparative advantage
-    comparative_advantage_País_textiles = "Ninguém"
+    comparative_advantage_country_textiles = "Ninguém"
     if (hours_a_wheat / hours_a_textiles) > (hours_b_wheat / hours_b_textiles):
         comparative_advantage_country_textiles = "O País A" 
         units_a_trade_wheat = 0
