@@ -68,12 +68,12 @@ df = pd.DataFrame(
        {"": "País B", "Horas necessárias para produzir trigo": 80, "Horas necessárias para produzir tecidos": 40}
     ]
 )
-edited_df = st.data_editor(df)
+edited_df = st.data_editor(df, hide_index=True)
 
-hours_a_wheat = edited_df.loc[edited_df[""]=="País A"]["Horas necessárias para produzir trigo"]
-hours_a_textiles = edited_df.loc[edited_df[""]=="País A"]["Horas necessárias para produzir tecidos"]
-hours_b_wheat = edited_df.loc[edited_df[""]=="País B"]["Horas necessárias para produzir trigo"]
-hours_b_textiles = edited_df.loc[edited_df[""]=="País B"]["Horas necessárias para produzir tecidos"]
+hours_a_wheat = int(edited_df.loc[edited_df[""]=="País A"]["Horas necessárias para produzir trigo"])
+hours_a_textiles = int(edited_df.loc[edited_df[""]=="País A"]["Horas necessárias para produzir tecidos"])
+hours_b_wheat = int(edited_df.loc[edited_df[""]=="País B"]["Horas necessárias para produzir trigo"])
+hours_b_textiles = int(edited_df.loc[edited_df[""]=="País B"]["Horas necessárias para produzir tecidos"])
 
 # Simulate and display the results
 simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles, hours_b_wheat, hours_b_textiles)
