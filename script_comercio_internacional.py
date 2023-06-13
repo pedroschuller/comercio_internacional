@@ -104,16 +104,16 @@ total_hours = st.slider('Quantas horas tem cada país disponíveis para trabalha
 
 df = pd.DataFrame(
     [
-       {"País": "A", "Horas necessárias para produzir trigo": 40, "Horas necessárias para produzir tecidos": 80},
-       {"País": "B", "Horas necessárias para produzir trigo": 80, "Horas necessárias para produzir tecidos": 40}
+       {"": "País A", "Horas necessárias para produzir trigo": 40, "Horas necessárias para produzir tecidos": 80},
+       {"": "País B", "Horas necessárias para produzir trigo": 80, "Horas necessárias para produzir tecidos": 40}
     ]
 )
-edited_df = st.data_editor(df, hide_index=True, disabled = ["País"]) 
+edited_df = st.data_editor(df, hide_index=True, disabled = [""]) 
 
-hours_a_wheat = int(edited_df.loc[edited_df["País"]=="A"]["Horas necessárias para produzir trigo"])
-hours_a_textiles = int(edited_df.loc[edited_df["País"]=="A"]["Horas necessárias para produzir tecidos"])
-hours_b_wheat = int(edited_df.loc[edited_df["País"]=="B"]["Horas necessárias para produzir trigo"])
-hours_b_textiles = int(edited_df.loc[edited_df["País"]=="B"]["Horas necessárias para produzir tecidos"])
+hours_a_wheat = int(edited_df.loc[edited_df[""]=="País A"]["Horas necessárias para produzir trigo"])
+hours_a_textiles = int(edited_df.loc[edited_df[""]=="País A"]["Horas necessárias para produzir tecidos"])
+hours_b_wheat = int(edited_df.loc[edited_df[""]=="País B"]["Horas necessárias para produzir trigo"])
+hours_b_textiles = int(edited_df.loc[edited_df[""]=="País B"]["Horas necessárias para produzir tecidos"])
 
 # Simulate and display the results
 simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles, hours_b_wheat, hours_b_textiles)
