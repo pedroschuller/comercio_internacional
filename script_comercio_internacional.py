@@ -32,25 +32,25 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     # Determine the comparative advantage
     comparative_advantage_País_textiles = "Ninguém"
     if (hours_a_wheat / hours_a_textiles) > (hours_b_wheat / hours_b_textiles):
-        comparative_advantage_País_textiles = "O País A" 
+        comparative_advantage_country_textiles = "O País A" 
         units_a_trade_wheat = 0
         units_b_trade_wheat = total_hours / hours_b_wheat
         units_a_trade_textiles = total_hours / hours_a_textiles
         units_b_trade_textiles = 0    
     if (hours_a_wheat / hours_a_textiles) < (hours_b_wheat / hours_b_textiles):
-        comparative_advantage_País_textiles = "O País B"
+        comparative_advantage_country_textiles = "O País B"
         units_a_trade_wheat = total_hours / hours_a_wheat
         units_b_trade_wheat = 0
         units_a_trade_textiles = 0
         units_b_trade_textiles = total_hours / hours_b_textiles
 
     # Print the results
-    st.write(f"{comparative_advantage_País_textiles} tem a vantagem comparativa a produzir tecidos.")
+    st.write(f"{comparative_advantage_country_textiles} tem a vantagem comparativa a produzir tecidos.")
     st.write("Quantidades produzidas sem trocas comerciais:")
     df_no_trade = pd.DataFrame(
                 [
                 {"": "País A", "Consumo de trigo": units_a_no_trade_wheat, "Consumo de tecidos": units_a_no_trade_textiles},
-                {"": "País B", "Consumo de trigo": units_b_no_trade_wheat, "Consumo de tecidos": units_b_no_trade_wheat}
+                {"": "País B", "Consumo de trigo": units_b_no_trade_wheat, "Consumo de tecidos": units_b_no_trade_textiles}
                 ]
     )
     st.dataframe(df_no_trade, hide_index=True)
@@ -61,7 +61,7 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     df_trade = pd.DataFrame(
                 [
                 {"": "País A", "Consumo de trigo": units_a_trade_wheat, "Consumo de tecidos": units_a_trade_textiles},
-                {"": "País B", "Consumo de trigo": units_b_trade_wheat, "Consumo de tecidos": units_b_trade_wheat}
+                {"": "País B", "Consumo de trigo": units_b_trade_wheat, "Consumo de tecidos": units_b_trade_textiles}
                 ]
     )
     st.dataframe(df_trade, hide_index=True)
