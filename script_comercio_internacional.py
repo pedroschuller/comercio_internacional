@@ -141,8 +141,8 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
             max_b_wheat = total_hours/hours_b_wheat
             max_b_textiles = total_hours/hours_a_textiles 
 
-        plot_possibility_frontiers(total_hours/hours_a_wheat, total_hours/hours_a_textiles, total_hours/hours_b_wheat, total_hours/hours_b_textiles
-                                   , max_a_wheat, max_a_textiles, max_b_wheat, max_b_textiles)
+        st.pyplot(plot_possibility_frontiers(total_hours/hours_a_wheat, total_hours/hours_a_textiles, total_hours/hours_b_wheat, total_hours/hours_b_textiles
+                                   , max_a_wheat, max_a_textiles, max_b_wheat, max_b_textiles))
 
          
 
