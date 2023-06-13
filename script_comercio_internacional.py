@@ -38,12 +38,12 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
 
     df_opportunity = pd.DataFrame(
                 [
-                {"": "País A", "Custo de oportunidade de produzir trigo em unidades de tecidos": opportunity_cost_a_wheat, "Custo de oportunidade de produzir tecidos em unidades de trigo": opportunity_cost_a_textiles},
-                {"": "País B", "Custo de oportunidade de produzir trigo em unidades de tecidos": opportunity_cost_b_wheat, "Custo de oportunidade de produzir tecidos em unidades de trigo": opportunity_cost_b_textiles}
+                {"": "País A", "Custo de oportunidade \nde produzir trigo \nem unidades de tecidos": opportunity_cost_a_wheat, "Custo de oportunidade \nde produzir tecidos \nem unidades de trigo": opportunity_cost_a_textiles},
+                {"": "País B", "Custo de oportunidade \nde produzir trigo \nem unidades de tecidos": opportunity_cost_b_wheat, "Custo de oportunidade \nde produzir tecidos \nem unidades de trigo": opportunity_cost_b_textiles}
                 ]
     )
 
-    st.dataframe(df_opportunity.style.highlight_min(axis=0), hide_index=True)
+    st.dataframe(df_opportunity.style.highlight_min(axis=0, subset=[1,2]), hide_index=True)
 
     # Determine the comparative advantage
     comparative_advantage_country_textiles = "Ninguém"
