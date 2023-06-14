@@ -22,13 +22,10 @@ def plot_possibility_frontiers(units_a_no_trade_wheat, units_a_no_trade_textiles
     # Plot the possibility frontier before trade
     plt.plot([0, units_a_no_trade_wheat], [units_a_no_trade_textiles, 0], label="País A (Sem trocas)")
     plt.plot([0, units_b_no_trade_wheat], [units_b_no_trade_textiles, 0], label="País B (Sem trocas)")
-    plt.plot([0, units_a_no_trade_wheat + units_b_no_trade_wheat], [units_a_no_trade_textiles + units_b_no_trade_textiles, 0], label="Global (Sem trocas)")
-
 
     # Plot the possibility frontier after trade
     plt.plot([0, units_a_trade_wheat], [units_a_trade_textiles, 0], label="País A (Com trocas)")
     plt.plot([0, units_b_trade_wheat], [units_b_trade_textiles, 0], label="País B (Com trocas)")
-    plt.plot([0, units_a_trade_wheat + units_b_trade_wheat], [units_a_trade_textiles + units_b_trade_textiles, 0], label="Global (Com trocas)")
 
     plt.xlabel("Trigo")
     plt.ylabel("Têxteis")
@@ -67,12 +64,17 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
 
     # Determine the comparative advantage
     comparative_advantage_country_textiles = "Ninguém"
+    fair_price_wheat = np.sqrt(opportunity_cost_a_wheat*opportunity_cost_b_wheat)
+    
     if (opportunity_cost_a_wheat) > (opportunity_cost_b_wheat):
         comparative_advantage_country_textiles = "O País A" 
-        units_a_trade_wheat = 0
-        units_b_trade_wheat = total_hours / hours_b_wheat
-        units_a_trade_textiles = total_hours / hours_a_textiles
-        units_b_trade_textiles = 0    
+        if hours_a_textiles > hours_b_wheat:
+            units_a_trade_wheat = 0
+            units_b_trade_wheat = total_hours / hours_b_wheat
+            units_a_trade_textiles = total_hours / hours_a_textiles
+            units_b_trade_textiles = 0 
+        else:
+            units_a_trade_wheat    
     if (opportunity_cost_a_wheat) < (opportunity_cost_b_wheat):
         comparative_advantage_country_textiles = "O País B"
         units_a_trade_wheat = total_hours / hours_a_wheat
@@ -136,9 +138,9 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
             max_b_textiles = total_hours/hours_a_textiles 
 
         if comparative_advantage_country_textiles == "O País B":
-            max_a_wheat = total_hours/hours_b_wheat
+            max_a_wheat = total_hours/hours_a_wheat
             max_a_textiles = total_hours/hours_a_textiles
-            max_b_wheat = total_hours/hours_b_wheat
+            max_b_wheat = total_hours/hours_a_wheat
             max_b_textiles = total_hours/hours_a_textiles 
 
         st.pyplot(plot_possibility_frontiers(total_hours/hours_a_wheat, total_hours/hours_a_textiles, total_hours/hours_b_wheat, total_hours/hours_b_textiles
