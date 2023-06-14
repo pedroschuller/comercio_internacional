@@ -65,16 +65,16 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     # Determine the comparative advantage
     comparative_advantage_country_textiles = "Ninguém"
     fair_price_wheat = np.sqrt(opportunity_cost_a_wheat*opportunity_cost_b_wheat)
-    
+
     if (opportunity_cost_a_wheat) > (opportunity_cost_b_wheat):
         comparative_advantage_country_textiles = "O País A" 
-        if hours_a_textiles > hours_b_wheat:
-            units_a_trade_wheat = 0
-            units_b_trade_wheat = total_hours / hours_b_wheat
-            units_a_trade_textiles = total_hours / hours_a_textiles
-            units_b_trade_textiles = 0 
-        else:
-            units_a_trade_wheat    
+        #if hours_a_textiles > hours_b_wheat:
+        units_a_trade_wheat = 0
+        units_b_trade_wheat = total_hours / hours_b_wheat
+        units_a_trade_textiles = total_hours / hours_a_textiles
+        units_b_trade_textiles = 0 
+        #else:
+            #units_a_trade_wheat    
     if (opportunity_cost_a_wheat) < (opportunity_cost_b_wheat):
         comparative_advantage_country_textiles = "O País B"
         units_a_trade_wheat = total_hours / hours_a_wheat
