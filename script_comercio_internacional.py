@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -169,12 +171,12 @@ def add_c(new_df: pd.DataFrame | None = None):
     st.experimental_rerun()
 
 if "df" not in st.session_state:
-    st.session_state.df = pd.DataFrame(
-    [
-       {"": "Trigo", "Un. trabalho necessárias": 6, "Un. de capital necessárias": 2, "Intensidade de trabalho":None},
-       {"": "Tecidos", "Un. de trabalho necessárias": 8, "Un. de capital necessárias": 4, "Intensidade de trabalho":None}
-    ]
-)
+    st.session_state["df"] = pd.DataFrame(
+        [
+            {"": "Trigo", "Un. trabalho necessárias": 6, "Un. de capital necessárias": 2, "Intensidade de trabalho":None},
+            {"": "Tecidos", "Un. de trabalho necessárias": 8, "Un. de capital necessárias": 4, "Intensidade de trabalho":None}
+        ]
+    )   
     add_c()
 
 editable_df = st.experimental_data_editor(st.session_state["df"], key="data", hide_index=True, disabled=["", "Intensidade de trabalho"])
