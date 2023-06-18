@@ -154,15 +154,31 @@ st.write("A teoria da dotação de factores de Heckscher-Ohlin sugere que os pa�
 
 st.write("Por exemplo, um país rico em recursos naturais, como o petróleo ou os minerais, pode especializar-se na extracção e exportação desses recursos. Esta especialização permite ao país tirar partido da sua dotação de recursos e gerar receitas de exportação. O rendimento gerado pelas exportações de recursos pode ser investido noutros sectores, como a educação, as infra-estruturas ou a tecnologia, o que leva ao desenvolvimento de outras indústrias e à diversificação da economia. Como resultado, o país regista um aumento da produtividade e dos salários dos seus trabalhadores, contribuindo para a prosperidade geral. Vamos novamente simular esta teoria:")
 
+# https://discuss.streamlit.io/t/experimental-data-editor-column-basic-calculation/39837/6
+def add_c(new_df: pd.DataFrame | None = None):
+    if new_df is not None:
+        if new_df.equals(st.session_state["df"]):
+            return
 
-df_ohlin = pd.DataFrame(
+        st.session_state["df"] = new_df
+
+    st.session_state["df"]["Intensidade de trabalho"] = 0
+    st.session_state["df"]["Intensidade de trabalho"] = (
+        st.session_state["df"]["Un. trabalho necessárias"] / st.session_state["df"]["Un. de capital necessárias"]
+    )
+    st.experimental_rerun()
+
+if "df" not in st.session_state:
+    st.session_state.df = pd.DataFrame(
     [
-       {"": "Trigo", "Unidades de trabalho necessárias": 6, "Unidades de capital necessárias": 2, "Intensidade de trabalho":6/2},
-       {"": "Tecidos", "Unidades de trabalho necessárias": 8, "Unidades de capital necessárias": 4, "Intensidade de trabalho":8/4}
+       {"": "Trigo", "Un. trabalho necessárias": 6, "Un. de capital necessárias": 2, "Intensidade de trabalho":None},
+       {"": "Tecidos", "Un. de trabalho necessárias": 8, "Un. de capital necessárias": 4, "Intensidade de trabalho":None}
     ]
 )
-edited_df_ohlin = st.data_editor(df_ohlin, disabled = ["", "Intensidade de trabalho"], hide_index=True) 
-edited_df_ohlin["Intensidade de trabalho"] = (edited_df_ohlin["Unidades de trabalho necessárias"] / edited_df_ohlin["Unidades de capital necessárias"])
+    add_c()
+
+editable_df = st.experimental_data_editor(st.session_state["df"], key="data", hide_index=True, disabled=["", "Intensidade de trabalho"])
+add_c(editable_df)
 
 
 st.subheader("Concorrência, inovação e economias de escala")
