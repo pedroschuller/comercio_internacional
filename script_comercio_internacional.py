@@ -128,7 +128,7 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
         total_trade_consumption = units_a_consume_wheat+units_a_consume_textiles+units_b_consume_wheat+units_b_consume_textiles
         st.write(f"Total consumido com comércio livre: {total_trade_consumption:.0f}")
 
-        st.write(f"O comércio internacional permitiu que as populações de ambos os países consumissem mais {total_trade_consumption-total_consumption:0f} unidades de produtos.")
+        st.write(f"O comércio internacional permitiu que as populações de ambos os países consumissem mais {(total_trade_consumption-total_consumption):0f} unidades de produtos.")
          
 # Input the total number of hours available and the hours required by each country to produce one unit of wheat and textiles
 total_hours = 1800
