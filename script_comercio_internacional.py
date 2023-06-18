@@ -154,10 +154,12 @@ st.subheader("Dotação de factores e ganhos de produtividade")
 
 st.write("A teoria da dotação de factores de Heckscher-Ohlin sugere que os países tendem a especializar-se na produção de bens que utilizam intensivamente os factores de produção que possuem em abundância. Esta especialização conduz a ganhos de produtividade e a um aumento dos salários dos factores de produção.")
 
-st.write("Por exemplo, um país rico em recursos naturais, como o petróleo ou os minerais, pode especializar-se na extracção e exportação desses recursos. Esta especialização permite ao país tirar partido da sua dotação de recursos e gerar receitas de exportação. O rendimento gerado pelas exportações de recursos pode ser investido noutros sectores, como a educação, as infra-estruturas ou a tecnologia, o que leva ao desenvolvimento de outras indústrias e à diversificação da economia. Como resultado, o país regista um aumento da produtividade e dos salários dos seus trabalhadores, contribuindo para a prosperidade geral. Vamos novamente simular esta teoria:")
+st.write("Por exemplo, um país rico em recursos naturais, como o petróleo ou os minerais, pode especializar-se na extracção e exportação desses recursos. Esta especialização permite ao país tirar partido da sua dotação de recursos e gerar receitas de exportação. O rendimento gerado pelas exportações de recursos pode ser investido noutros sectores, como a educação, as infra-estruturas ou a tecnologia, o que leva ao desenvolvimento de outras indústrias e à diversificação da economia. Como resultado, o país regista um aumento da produtividade e dos salários dos seus trabalhadores, contribuindo para a prosperidade geral.")
+
+st.write("Vamos novamente simular esta teoria. Qual é a intensidade de cada um dos produtos relativamente aos seus fatores de produção?")
 
 # https://discuss.streamlit.io/t/experimental-data-editor-column-basic-calculation/39837/6
-def add_c(new_df: pd.DataFrame | None = None):
+def add_factors(new_df: pd.DataFrame | None = None):
     if new_df is not None:
         if new_df.equals(st.session_state["df"]):
             return
@@ -177,11 +179,54 @@ if "df" not in st.session_state:
             {"": "Tecidos", "Un. trabalho necessárias": 8, "Un. capital necessárias": 4, "Intensidade de trabalho":None}
         ]
     )   
-    add_c()
+    add_factors()
 
-editable_df = st.experimental_data_editor(st.session_state["df"], key="data", hide_index=True, disabled=["", "Intensidade de trabalho"])
-add_c(editable_df)
+df_factors = st.experimental_data_editor(st.session_state["df"], key="data", hide_index=True, disabled=["", "Intensidade de trabalho"])
+add_factors(df_factors)
 
+wheat_work = int(df_factors.loc[df_factors[""]=="Trigo"]["Un. trabalho necessárias"])
+textiles_work = int(df_factors.loc[df_factors[""]=="Tecidos"]["Un. trabalho necessárias"])
+wheat_capital = int(df_factors.loc[df_factors[""]=="Trigo"]["Un. capital necessárias"])
+textiles_capital = int(df_factors.loc[df_factors[""]=="Tecidos"]["Un. capital necessárias"])
+
+st.write("Qual o custo dos fatores de produção em cada país?")
+
+df_costs = pd.DataFrame(
+    [
+       {"": "País A", "Remuneração do trabalho": 40, "Remuneração do capital": 120},
+       {"": "País B", "Remuneração do trabalho": 120, "Remuneração do capital": 120}
+    ]
+)
+editable_df_costs = st.data_editor(df_costs, disabled = [""], hide_index=True) 
+
+costs_a_work = int(editable_df_costs.loc[editable_df_costs[""]=="País A"]["Remuneração do trabalho"])
+costs_a_capital = int(editable_df_costs.loc[editable_df_costs[""]=="País A"]["Remuneração do capital"])
+costs_b_work = int(editable_df_costs.loc[editable_df_costs[""]=="País B"]["Remuneração do trabalho"])
+costs_b_capital = int(editable_df_costs.loc[editable_df_costs[""]=="País B"]["Remuneração do capital"])
+
+costs_a_wheat = costs_a_work*wheat_work + costs_a_capital*wheat_capital
+costs_b_wheat = costs_b_work*wheat_work + costs_b_capital*wheat_capital
+costs_a_textiles = costs_a_work*textiles_work + costs_a_capital*textiles_capital
+costs_b_textiles = costs_b_work*textiles_work + costs_b_capital*textiles_capital
+
+st.write("Derivam-se os seguintes custos reais e de oportunidade:")
+
+df_opportunity = pd.DataFrame(
+            [
+            {"": "País A", "Custo do trigo": "{:.2f}".format(costs_a_wheat), "Custo dos tecidos": "{:.2f}".format(costs_a_textiles), "C. oportundade tecidos": "{:.2f}".format(costs_a_textiles/costs_a_wheat)},
+            {"": "País B", "Custo do trigo": "{:.2f}".format(costs_b_wheat), "Custo dos tecidos": "{:.2f}".format(costs_b_textiles), "C. oportundade tecidos": "{:.2f}".format(costs_b_textiles/costs_b_wheat)}
+            ]
+)
+st.dataframe(df_opportunity.style.highlight_min(axis=0, subset=["C. oportundade tecidos"]), hide_index=True)
+
+if costs_a_textiles/costs_a_wheat == costs_b_textiles/costs_b_wheat:
+    sentence = "É igualmente barato produzir em ambos os países em termos relativos"
+elif costs_a_textiles/costs_a_wheat < costs_b_textiles/costs_b_wheat:
+    sentence = "É relativamente mais barato produzir tecidos no país A"
+else:
+    sentence = "É relativamente mais barato produzir tecidos no país B"
+
+st.write(sentence)
 
 st.subheader("Concorrência, inovação e economias de escala")
 
