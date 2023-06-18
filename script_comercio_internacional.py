@@ -80,10 +80,6 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     # Determine the comparative advantage
     comparative_advantage_country_textiles = "Ninguém"
 
-    # find fair price to trade wheat (meet halfway)
-    fair_price_wheat = np.sqrt(opportunity_cost_a_wheat*opportunity_cost_b_wheat)
-    fair_price_textiles = 1/fair_price_wheat
-
     if (opportunity_cost_a_wheat) > (opportunity_cost_b_wheat):
         comparative_advantage_country_textiles = "O País A"  
     if (opportunity_cost_a_wheat) < (opportunity_cost_b_wheat):
@@ -113,7 +109,11 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     max_wheat = max_a_wheat + max_b_wheat
     max_textiles = max_a_textiles + max_b_textiles
 
-    # se o país A compra trigo
+    # find fair price to trade wheat (meet halfway)
+    fair_price_wheat_inicial = np.sqrt(opportunity_cost_a_wheat*opportunity_cost_b_wheat)
+    fair_price_wheat = st.slider('Os países só têm interesse em trocar se o preço do trigo em unidades de tecidos se compreender entre os seguintes valores: ', np.min(opportunity_cost_a_wheat, opportunity_cost_b_wheat), np.max(opportunity_cost_a_wheat, opportunity_cost_b_wheat), value = fair_price_wheat_inicial)
+    fair_price_textiles = 1/fair_price_wheat
+
     if comparative_advantage_country_textiles == "O País A":
         if hours_a_textiles <= hours_b_wheat: # se o país A consegue produzir todo o tecido da economia:
             # país limitado = B | produto limitado: trigo
@@ -136,8 +136,8 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
         st.write("Quantidades produzidas recorrendo a trocas comerciais:")
         df_produce = pd.DataFrame(
                     [
-                    {"": "País A", "Produção de trigo": units_a_produce_wheat, "Produção de tecidos": units_a_produce_textiles, "Consumo de trigo*": units_a_consume_wheat, "Consumo de tecidos*": units_a_consume_textiles},
-                    {"": "País B", "Produção de trigo": units_b_produce_wheat, "Produção de tecidos": units_b_produce_textiles, "Consumo de trigo*": units_b_consume_wheat, "Consumo de tecidos*": units_b_consume_textiles}
+                    {"": "País A", "Produção de trigo": "{:.2f}".format(units_a_produce_wheat), "Produção de tecidos": "{:.2f}".format(units_a_produce_textiles), "Consumo de trigo*": "{:.2f}".format(units_a_consume_wheat), "Consumo de tecidos*": "{:.2f}".format(units_a_consume_textiles)},
+                    {"": "País B", "Produção de trigo": "{:.2f}".format(units_b_produce_wheat), "Produção de tecidos": "{:.2f}".format(units_b_produce_textiles), "Consumo de trigo*": "{:.2f}".format(units_b_consume_wheat), "Consumo de tecidos*": "{:.2f}".format(units_b_consume_textiles)}
                     ]
         )
         st.dataframe(df_produce, hide_index=True)
