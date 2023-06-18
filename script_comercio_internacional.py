@@ -166,15 +166,15 @@ def add_c(new_df: pd.DataFrame | None = None):
 
     st.session_state["df"]["Intensidade de trabalho"] = 0
     st.session_state["df"]["Intensidade de trabalho"] = (
-        st.session_state["df"]["Un. trabalho necessárias"] / st.session_state["df"]["Un. de capital necessárias"]
+        st.session_state["df"]["Un. trabalho necessárias"] / st.session_state["df"]["Un. capital necessárias"]
     )
     st.experimental_rerun()
 
 if "df" not in st.session_state:
     st.session_state["df"] = pd.DataFrame(
         [
-            {"": "Trigo", "Un. trabalho necessárias": 6, "Un. de capital necessárias": 2, "Intensidade de trabalho":None},
-            {"": "Tecidos", "Un. de trabalho necessárias": 8, "Un. de capital necessárias": 4, "Intensidade de trabalho":None}
+            {"": "Trigo", "Un. trabalho necessárias": 6, "Un. capital necessárias": 2, "Intensidade de trabalho":None},
+            {"": "Tecidos", "Un. trabalho necessárias": 8, "Un. capital necessárias": 4, "Intensidade de trabalho":None}
         ]
     )   
     add_c()
