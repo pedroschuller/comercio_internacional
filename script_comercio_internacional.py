@@ -17,23 +17,6 @@ st.write("A teoria das vantagens comparativa de David Ricardo destaca os benefí
 
 st.write("Por exemplo, considere-se um cenário em que o país A tem um custo de oportunidade mais baixo na produção de trigo, enquanto o país B tem um custo de oportunidade mais baixo na produção de têxteis. Se ambos os países se especializarem na produção do bem em que têm uma vantagem comparativa e efectuarem trocas comerciais entre si, podem maximizar a sua produção global. O país A pode concentrar-se na produção de mais trigo e exportar o excedente, enquanto o país B pode especializar-se na produção de têxteis e exportá-los. Esta especialização permite que ambos os países beneficiem de uma maior produtividade e de um aumento das trocas comerciais, o que conduz ao crescimento económico e à prosperidade. Vamos experimentar:")
 
-def plot_possibility_frontiers(units_a_no_trade_wheat, units_a_no_trade_textiles, units_b_no_trade_wheat, units_b_no_trade_textiles,
-                              units_a_trade_wheat, units_a_trade_textiles, units_b_trade_wheat, units_b_trade_textiles):
-    # Plot the possibility frontier before trade
-    plt.plot([0, units_a_no_trade_wheat], [units_a_no_trade_textiles, 0], label="País A (Sem trocas)")
-    plt.plot([0, units_b_no_trade_wheat], [units_b_no_trade_textiles, 0], label="País B (Sem trocas)")
-
-    # Plot the possibility frontier after trade
-    plt.plot([0, units_a_trade_wheat], [units_a_trade_textiles, 0], label="País A (Com trocas)")
-    plt.plot([0, units_b_trade_wheat], [units_b_trade_textiles, 0], label="País B (Com trocas)")
-
-    plt.xlabel("Trigo")
-    plt.ylabel("Têxteis")
-    plt.title("Fronteira das possibilidades de consumo")
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
 def calculate_production_consumption(max_limited_product, max_ltd_comp_advantage, max_unlimited, fair_price_ltd):
             # intersecção entre as curvas X = Y e os limites de produção da economia devolve a seguinte equação:
             total_production = (max_unlimited*max_limited_product)/(max_unlimited-max_ltd_comp_advantage+max_limited_product)
@@ -52,20 +35,18 @@ def calculate_production_consumption(max_limited_product, max_ltd_comp_advantage
 
             return units_unltd_produce_ltd, units_unltd_produce_unltd, units_ltd_produce_ltd, units_ltd_produce_unltd, units_unltd_consume_ltd, units_unltd_consume_unltd, units_ltd_consume_unltd, units_ltd_consume_ltd
 
-
-
 def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles, hours_b_wheat, hours_b_textiles):
     # Calculate the number of units produced without trade
-    units_a_no_trade_wheat = total_hours / (hours_a_wheat+hours_a_textiles)
+    units_a_no_trade_wheat = total_hours / (hours_a_wheat + hours_a_textiles)
     units_a_no_trade_textiles = units_a_no_trade_wheat
     units_b_no_trade_wheat = total_hours / (hours_b_wheat + hours_b_textiles)
     units_b_no_trade_textiles = units_b_no_trade_wheat
 
     # Calculate opportunity costs
     opportunity_cost_a_wheat = hours_a_wheat / hours_a_textiles
-    opportunity_cost_a_textiles = 1/opportunity_cost_a_wheat
+    opportunity_cost_a_textiles = 1 / opportunity_cost_a_wheat
     opportunity_cost_b_wheat = hours_b_wheat / hours_b_textiles
-    opportunity_cost_b_textiles = 1/opportunity_cost_b_wheat
+    opportunity_cost_b_textiles = 1 / opportunity_cost_b_wheat
 
 
     df_opportunity = pd.DataFrame(
@@ -111,7 +92,7 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
 
     # find fair price to trade wheat (meet halfway)
     fair_price_wheat_inicial = np.sqrt(opportunity_cost_a_wheat*opportunity_cost_b_wheat)
-    fair_price_wheat = st.slider('Os países só têm interesse em trocar se o preço do trigo em unidades de tecidos se compreender entre os seguintes valores: ', min(opportunity_cost_a_wheat, opportunity_cost_b_wheat), max(opportunity_cost_a_wheat, opportunity_cost_b_wheat), value = float(fair_price_wheat_inicial))
+    fair_price_wheat = st.slider('Os países só têm interesse em trocar se o preço do trigo em unidades de tecidos se compreender entre os respetivos custos de oportunidade: ', min(opportunity_cost_a_wheat, opportunity_cost_b_wheat), max(opportunity_cost_a_wheat, opportunity_cost_b_wheat), value = float(fair_price_wheat_inicial))
     fair_price_textiles = 1/fair_price_wheat
 
     if comparative_advantage_country_textiles == "O País A":
@@ -137,29 +118,12 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
         df_produce = pd.DataFrame(
                     [
                     {"": "País A", "Produção de trigo": "{:.2f}".format(units_a_produce_wheat), "Produção de tecidos": "{:.2f}".format(units_a_produce_textiles), "Consumo de trigo*": "{:.2f}".format(units_a_consume_wheat), "Consumo de tecidos*": "{:.2f}".format(units_a_consume_textiles)},
-                    {"": "País B", "Produção de trigo": "{:.2f}".format(units_b_produce_wheat), "Produção de tecidos": "{:.2f}".format(units_b_produce_textiles), "Consumo de trigo*": "{:.2f}".format(units_b_consume_wheat), "Consumo de tecidos*": "{:.2f}".format(units_b_consume_textiles)}
+                    {"": "País B", "Produção de trigo": "{:.2f}".format(units_b_produce_wheat), "Produção de tecidos": "{:.2f}".format(units_b_produce_textiles), "Consumo de trigo": "{:.2f}".format(units_b_consume_wheat), "Consumo de tecidos": "{:.2f}".format(units_b_consume_textiles)}
                     ]
         )
         st.dataframe(df_produce, hide_index=True)
 
         st.write(f"Total consumido com comércio livre: {units_a_consume_wheat+units_a_consume_textiles+units_b_consume_wheat+units_b_consume_textiles:.0f}")
-
-        st.write("*Assumindo que os países encontram um preço a meio caminho dos respetivos custos de oportunidade")
-
-        #if comparative_advantage_country_textiles == "O País A":
-        #    max_a_wheat = total_hours/hours_b_wheat
-        #    max_a_textiles = total_hours/hours_a_textiles
-        #    max_b_wheat = total_hours/hours_b_wheat
-        #    max_b_textiles = total_hours/hours_a_textiles 
-
-        #if comparative_advantage_country_textiles == "O País B":
-        #    max_a_wheat = total_hours/hours_a_wheat
-        #    max_a_textiles = total_hours/hours_a_textiles
-        #    max_b_wheat = total_hours/hours_a_wheat
-        #    max_b_textiles = total_hours/hours_a_textiles 
-
-        #st.pyplot(plot_possibility_frontiers(total_hours/hours_a_wheat, total_hours/hours_a_textiles, total_hours/hours_b_wheat, total_hours/hours_b_textiles, max_a_wheat, max_a_textiles, max_b_wheat, max_b_textiles))
-
          
 # Input the total number of hours available and the hours required by each country to produce one unit of wheat and textiles
 total_hours = 1800
@@ -188,8 +152,17 @@ st.subheader("Dotação de factores e ganhos de produtividade")
 
 st.write("A teoria da dotação de factores de Heckscher-Ohlin sugere que os países tendem a especializar-se na produção de bens que utilizam intensivamente os factores de produção que possuem em abundância. Esta especialização conduz a ganhos de produtividade e a um aumento dos salários dos factores de produção.")
 
-st.write("Por exemplo, um país rico em recursos naturais, como o petróleo ou os minerais, pode especializar-se na extracção e exportação desses recursos. Esta especialização permite ao país tirar partido da sua dotação de recursos e gerar receitas de exportação. O rendimento gerado pelas exportações de recursos pode ser investido noutros sectores, como a educação, as infra-estruturas ou a tecnologia, o que leva ao desenvolvimento de outras indústrias e à diversificação da economia. Como resultado, o país regista um aumento da produtividade e dos salários dos seus trabalhadores, contribuindo para a prosperidade geral.")
+st.write("Por exemplo, um país rico em recursos naturais, como o petróleo ou os minerais, pode especializar-se na extracção e exportação desses recursos. Esta especialização permite ao país tirar partido da sua dotação de recursos e gerar receitas de exportação. O rendimento gerado pelas exportações de recursos pode ser investido noutros sectores, como a educação, as infra-estruturas ou a tecnologia, o que leva ao desenvolvimento de outras indústrias e à diversificação da economia. Como resultado, o país regista um aumento da produtividade e dos salários dos seus trabalhadores, contribuindo para a prosperidade geral. Vamos novamente simular esta teoria:")
 
+
+df_ohlin = pd.DataFrame(
+    [
+       {"": "Trigo", "Unidades de trabalho necessárias": 6, "Unidades de capital necessárias": 2, "Intensidade de trabalho":6/2},
+       {"": "Tecidos", "Unidades de trabalho necessárias": 8, "Unidades de capital necessárias": 4, "Intensidade de trabalho":8/4}
+    ]
+)
+edited_df_ohlin = st.data_editor(df_ohlin, disabled = ["", "Intensidade de trabalho"], hide_index=True) 
+edited_df_ohlin["Intensidade de trabalho"] = (edited_df_ohlin["Unidades de trabalho necessárias"] / edited_df_ohlin["Unidades de capital necessárias"])
 
 
 st.subheader("Concorrência, inovação e economias de escala")
