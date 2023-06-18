@@ -50,7 +50,6 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     opportunity_cost_b_wheat = hours_b_wheat / hours_b_textiles
     opportunity_cost_b_textiles = 1 / opportunity_cost_b_wheat
 
-
     df_opportunity = pd.DataFrame(
                 [
                 {"": "País A", "C. oportunidade de produzir trigo em un. de tecidos": "{:.2f}".format(opportunity_cost_a_wheat), "C. oportunidade de produzir tecidos em un. de trigo": "{:.2f}".format(opportunity_cost_a_textiles)},
@@ -81,8 +80,11 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
     )
 
     st.dataframe(df_no_trade, hide_index=True)
-    st.write(f"Total consumido sem trocas comerciais: {units_a_no_trade_wheat+units_a_no_trade_textiles+units_b_no_trade_wheat+units_b_no_trade_textiles:.0f}")
 
+    total_consumption = units_a_no_trade_wheat+units_a_no_trade_textiles+units_b_no_trade_wheat+units_b_no_trade_textiles
+    st.write(f"Total consumido sem trocas comerciais: {total_consumption:.0f}")
+
+    # TRADE
     #produções máximas:
     max_a_wheat = total_hours / hours_a_wheat
     max_a_textiles = total_hours / hours_a_textiles
@@ -112,8 +114,6 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
             # país limitado = B | produto limitado: tecidos
             units_a_produce_textiles, units_a_produce_wheat, units_b_produce_textiles, units_b_produce_wheat, units_a_consume_textiles, units_a_consume_wheat, units_b_consume_wheat, units_b_consume_textiles = calculate_production_consumption(max_textiles, max_b_textiles, max_a_wheat, fair_price_textiles)
 
-
-    # TRADE    
     if comparative_advantage_country_textiles != "Ninguém":
 
         st.write("Quantidades produzidas recorrendo a trocas comerciais:")
@@ -125,7 +125,10 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
         )
         st.dataframe(df_produce, hide_index=True)
 
-        st.write(f"Total consumido com comércio livre: {units_a_consume_wheat+units_a_consume_textiles+units_b_consume_wheat+units_b_consume_textiles:.0f}")
+        total_trade_consumption = units_a_consume_wheat+units_a_consume_textiles+units_b_consume_wheat+units_b_consume_textiles
+        st.write(f"Total consumido com comércio livre: {total_trade_consumption:.0f}")
+
+        st.write(f"O comércio internacional permitiu que as populações de ambos os países consumissem mais {total_trade_consumption-total_consumption:0f} unidades de produtos.")
          
 # Input the total number of hours available and the hours required by each country to produce one unit of wheat and textiles
 total_hours = 1800
