@@ -119,7 +119,7 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
         st.write("Quantidades produzidas recorrendo a trocas comerciais:")
         df_produce = pd.DataFrame(
                     [
-                    {"": "País A", "Produção de trigo": "{:.2f}".format(units_a_produce_wheat), "Produção de tecidos": "{:.2f}".format(units_a_produce_textiles), "Consumo de trigo*": "{:.2f}".format(units_a_consume_wheat), "Consumo de tecidos*": "{:.2f}".format(units_a_consume_textiles)},
+                    {"": "País A", "Produção de trigo": "{:.2f}".format(units_a_produce_wheat), "Produção de tecidos": "{:.2f}".format(units_a_produce_textiles), "Consumo de trigo": "{:.2f}".format(units_a_consume_wheat), "Consumo de tecidos": "{:.2f}".format(units_a_consume_textiles)},
                     {"": "País B", "Produção de trigo": "{:.2f}".format(units_b_produce_wheat), "Produção de tecidos": "{:.2f}".format(units_b_produce_textiles), "Consumo de trigo": "{:.2f}".format(units_b_consume_wheat), "Consumo de tecidos": "{:.2f}".format(units_b_consume_textiles)}
                     ]
         )
@@ -213,18 +213,18 @@ st.write("Derivam-se os seguintes custos reais e de oportunidade:")
 
 df_opportunity = pd.DataFrame(
             [
-            {"": "País A", "Custo do trigo": "{:.2f}".format(costs_a_wheat), "Custo dos tecidos": "{:.2f}".format(costs_a_textiles), "C. oportundade tecidos": "{:.2f}".format(costs_a_textiles/costs_a_wheat)},
-            {"": "País B", "Custo do trigo": "{:.2f}".format(costs_b_wheat), "Custo dos tecidos": "{:.2f}".format(costs_b_textiles), "C. oportundade tecidos": "{:.2f}".format(costs_b_textiles/costs_b_wheat)}
+            {"": "País A", "Custo do trigo": "{:.0f}".format(costs_a_wheat), "Custo dos tecidos": "{:.0f}".format(costs_a_textiles), "Custo de oportunidade de produzir tecido em unidades de trigo": "{:.2f}".format(costs_a_textiles/costs_a_wheat)},
+            {"": "País B", "Custo do trigo": "{:.0f}".format(costs_b_wheat), "Custo dos tecidos": "{:.0f}".format(costs_b_textiles), "Custo de oportunidade de produzir tecido em unidades de trigo": "{:.2f}".format(costs_b_textiles/costs_b_wheat)}
             ]
 )
-st.dataframe(df_opportunity.style.highlight_min(axis=0, subset=["C. oportundade tecidos"]), hide_index=True)
+st.dataframe(df_opportunity.style.highlight_min(axis=0, subset=["Custo de oportunidade de produzir tecido em unidades de trigo"]), hide_index=True)
 
 if costs_a_textiles/costs_a_wheat == costs_b_textiles/costs_b_wheat:
-    sentence = "É igualmente barato produzir em ambos os países em termos relativos"
+    sentence = "É igualmente barato produzir em ambos os países em termos relativos."
 elif costs_a_textiles/costs_a_wheat < costs_b_textiles/costs_b_wheat:
-    sentence = "É relativamente mais barato produzir tecidos no país A"
+    sentence = "É relativamente mais barato produzir tecidos no País A."
 else:
-    sentence = "É relativamente mais barato produzir tecidos no país B"
+    sentence = "É relativamente mais barato produzir tecidos no País B."
 
 st.write(sentence)
 
