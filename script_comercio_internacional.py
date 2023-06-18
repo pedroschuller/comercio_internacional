@@ -111,7 +111,7 @@ def simulate_comparative_advantage(total_hours, hours_a_wheat, hours_a_textiles,
 
     # find fair price to trade wheat (meet halfway)
     fair_price_wheat_inicial = np.sqrt(opportunity_cost_a_wheat*opportunity_cost_b_wheat)
-    fair_price_wheat = st.slider('Os países só têm interesse em trocar se o preço do trigo em unidades de tecidos se compreender entre os seguintes valores: ', min(opportunity_cost_a_wheat, opportunity_cost_b_wheat), max(opportunity_cost_a_wheat, opportunity_cost_b_wheat), value = fair_price_wheat_inicial)
+    fair_price_wheat = st.slider('Os países só têm interesse em trocar se o preço do trigo em unidades de tecidos se compreender entre os seguintes valores: ', min(opportunity_cost_a_wheat, opportunity_cost_b_wheat), max(opportunity_cost_a_wheat, opportunity_cost_b_wheat), value = float(fair_price_wheat_inicial))
     fair_price_textiles = 1/fair_price_wheat
 
     if comparative_advantage_country_textiles == "O País A":
